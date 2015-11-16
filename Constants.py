@@ -7,3 +7,4 @@ class constants:
     DATABASE = "Yelp_User_Reviews"
     REVIEWS_COLLECTION = "Reviews"
     BUSINESS_COLLECTION = "Business"
+    CORPUS_COLLECTION = "Corpus"

@@ -1,4 +1,4 @@
-import json, ast
+import json
 import collections
 from UTFToAscii import convert
 
