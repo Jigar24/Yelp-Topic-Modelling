@@ -31,7 +31,8 @@ db = MongoClient()[constants.DATABASE]
 #db.drop_collection(constants.CORPUS_COLLECTION)
 print corpus_collection.find().count()
 
-for i in range(400239,review_cursor.count()):
+for i in range(review_cursor.count()):
+#for i in range(400239,review_cursor.count()):
         
         try :
              review =review_cursor.__getitem__(i)
