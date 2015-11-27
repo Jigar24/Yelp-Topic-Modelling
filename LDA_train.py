@@ -32,11 +32,8 @@ corpora.BleiCorpus.serialize(Corpus_path,bow)
 
 corpus = corpora.BleiCorpus(Corpus_path)
 
-print "sukriti"
-
 LDA = gensim.models.LdaModel(corpus,num_topics = 50,id2word=dictionary)
 LDA.save(LDA_path)
-
 
 LDA = gensim.models.LdaModel.load(LDA_path)
 i=0
