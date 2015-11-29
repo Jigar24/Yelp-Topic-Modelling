@@ -16,10 +16,10 @@ cursor = corpus_collection.find()
 
 dictionary = corpora.Dictionary.load(Dict_path)
 
-i = 0
+#i = 0
 bow_train = []
 for i in range(0,30000):
-    print i
+    #print i
     review =cursor.__getitem__(i)
     bow_train.append(dictionary.doc2bow(review['words']))
 	
@@ -28,12 +28,12 @@ corpora.BleiCorpus.serialize(Corpus_path_train,bow_train)
 corpus_train = corpora.BleiCorpus(Corpus_path_train)
 
 #LDA = gensim.models.LdaModel(corpus,num_topics = 10,id2word=dictionary)
-LDA = gensim.models.LdaModel(corpus_train,num_topics = constants.NUM_TOPICS,id2word=dictionary,iterations=500)
+LDA = gensim.models.LdaModel(corpus_train,num_topics = constants.NUM_TOPICS,id2word=dictionary, iterations=500)
 LDA.save(LDA_path_train)
 print '_________________________________________________________________________'
 
 bow_test = []
-for i in range(30000,40755):
+for i in range(30000,40754):
     review =cursor.__getitem__(i)
     bow_test.append(dictionary.doc2bow(review['words']))
 
