@@ -5,13 +5,18 @@ from UTFToAscii import convert
 from pymongo import MongoClient
 from Constants import constants
 
-
+topic_rating_collection = MongoClient()[constants.DATABASE][constants.TOPIC_RATING_COLLECTION]
 restaurants_collection = MongoClient()[constants.DATABASE][constants.BUSINESS_COLLECTION]
 reviews_collection = MongoClient()[constants.DATABASE][constants.REVIEWS_COLLECTION]
 review_cursor = reviews_collection.find()
 corpus_collection = MongoClient()[constants.DATABASE][constants.CORPUS_COLLECTION]
 cursor = corpus_collection.find()
 
+record  = topic_rating_collection.find_one()
+for topic in record['rating']:
+	print topic[0], ',' , topic[1]
+	
+'''
 for i in range(10):
 	try:
 		corpus_review = cursor.__getitem__(i)
@@ -30,7 +35,7 @@ for i in range(10):
 with open(constants.JSON_DATASET_FILE+'yelp_academic_dataset_business.json') as business:
 	for line in business:
 		business_info = json.loads(line)
-
+'''
 val = restaurants_collection.find_one( {"_id" : "SQ0j7bgSTazkVQlF5AnqyQ" })
 
 #print convert(review)
