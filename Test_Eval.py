@@ -5,26 +5,21 @@ from gensim import corpora
 import nltk
 import gensim
 
-
-Dict_path_train = "Data/Dict_train"
+Dict_path = "Data/Dict"
 Corpus_path_train = "Data/Corpus_train"
 LDA_path_train = "Data/Online_LDA_train"
 
-#Dict_path_test = "Data/Dict_test"
 Corpus_path_test = "Data/Corpus_test"
-#LDA_path_test = "Data/Online_LDA_test"
+
 corpus_collection = MongoClient()[constants.DATABASE][constants.CORPUS_COLLECTION]
 cursor = corpus_collection.find()
 
+dictionary = corpora.Dictionary.load(Dict_path)
 
-dictionary = corpora.Dictionary(review['words'] for review in cursor)
-corpora.Dictionary.save(dictionary,Dict_path_train)
-
-dictionary = corpora.Dictionary.load(Dict_path_train)
-#i = 0
+i = 0
 bow_train = []
 for i in range(0,30000):
-    #print i
+    print i
     review =cursor.__getitem__(i)
     bow_train.append(dictionary.doc2bow(review['words']))
 	
