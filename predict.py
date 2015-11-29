@@ -35,13 +35,21 @@ class Predict():
 		print i
 		
 		#f.write(i'\t')
-		topic_rating_collection.update_one({'_id':review['_id']},{"$set":{
+		'''topic_rating_collection.update_one({'_id':review['_id']},{"$set":{
 		"_id" : review['_id'],
 		"business_id" : review['business_id'],
 		"user_id" : review ["user_id"],
 		"stars" : review["stars"],
 		"rating" : new_review_lda
-		}})
+		}})'''
+		topic_rating_collection.insert({
+		"_id" : review['_id'],
+		"business_id" : review['business_id'],
+		"user_id" : review ["user_id"],
+		"stars" : review["stars"],
+		"rating" : new_review_lda
+		})
+		
 		#f.write(str(new_review_lda))
 		#f.write('\n')
 
