@@ -32,14 +32,19 @@ corpora.BleiCorpus.serialize(Corpus_path,bow)
 
 corpus = corpora.BleiCorpus(Corpus_path)
 
-LDA = gensim.models.LdaModel(corpus,num_topics = 50,id2word=dictionary)
+
+LDA = gensim.models.LdaModel(corpus,num_topics = 15,id2word=dictionary,iterations = 1000)
 LDA.save(LDA_path)
+
+print 'Hii'
+print LDA.bound(corpus)
+
 
 LDA = gensim.models.LdaModel.load(LDA_path)
 i=0
 
-f = open('topics.txt','w')
-for topic in LDA.show_topics(num_topics=50):
+f = open('topics_15.txt','w')
+for topic in LDA.show_topics(num_topics=15):
 	#print 'Topic',i , '::' , topic
 	f.write(str(topic))
 	f.write('\n')

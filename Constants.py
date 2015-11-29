@@ -8,3 +8,5 @@ class constants:
     REVIEWS_COLLECTION = "Reviews"
     BUSINESS_COLLECTION = "Business"
     CORPUS_COLLECTION = "Corpus"
+    TOPIC_RATING_COLLECTION = "Topic_Rating"
+    USER_COLLECTION = "User"
