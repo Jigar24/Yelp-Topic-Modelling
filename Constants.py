@@ -10,3 +10,4 @@ class constants:
     CORPUS_COLLECTION = "Corpus"
     TOPIC_RATING_COLLECTION = "Topic_Rating"
     USER_COLLECTION = "User"
+    NUM_TOPICS = 5
