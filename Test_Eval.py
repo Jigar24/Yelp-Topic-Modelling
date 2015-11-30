@@ -5,53 +5,46 @@ from gensim import corpora
 import nltk
 import gensim
 
+Dict_path = "Data/Dict"
+Corpus_path_train = "Data/Corpus_train"
+LDA_path_train = "Data/Online_LDA_train"
 
-Dict_path = "Data/Dict1"
-Corpus_path = "Data/Corpus1"
-LDA_path = "Data/Online_LDA1"
+Corpus_path_test = "Data/Corpus_test"
+
 corpus_collection = MongoClient()[constants.DATABASE][constants.CORPUS_COLLECTION]
-
 cursor = corpus_collection.find()
-#print dictionary.len()
 
-dictionary = corpora.Dictionary(review['words'] for review in cursor)
-#dictionary.filter_extremes(keep_n=100000)
-#dictionary.compactify()
-corpora.Dictionary.save(dictionary,Dict_path)
+dictionary = corpora.Dictionary.load(Dict_path)
 
-bow = []
-i=0
-print cursor.count()
-cursor = corpus_collection.find()
-for i in range(0,35000):
-    #print i+1
+#i = 0
+bow_train = []
+for i in range(0,30000):
+    #print i
     review =cursor.__getitem__(i)
-    bow.append(dictionary.doc2bow(review['words']))
-print len(bow)
-corpora.BleiCorpus.serialize(Corpus_path,bow)
+    bow_train.append(dictionary.doc2bow(review['words']))
+	
+corpora.BleiCorpus.serialize(Corpus_path_train,bow_train)
 
-corpus = corpora.BleiCorpus(Corpus_path)
+corpus_train = corpora.BleiCorpus(Corpus_path_train)
 
-LDA = gensim.models.LdaModel(corpus,num_topics = 10,id2word=dictionary)
-#LDA = gensim.models.LdaModel(corpus,num_topics = 50,id2word=dictionary,alpha='auto',iterations=500)
-LDA.save(LDA_path)
+#LDA = gensim.models.LdaModel(corpus,num_topics = 10,id2word=dictionary)
+LDA = gensim.models.LdaModel(corpus_train,num_topics = constants.NUM_TOPICS,id2word=dictionary, iterations=500)
+LDA.save(LDA_path_train)
 print '_________________________________________________________________________'
 
-bow_t = []
-for i in range(35000,40753):
-    #print i+1
+bow_test = []
+for i in range(30000,40754):
     review =cursor.__getitem__(i)
-    bow_t.append(dictionary.doc2bow(review['words']))
-print len(bow_t)
+    bow_test.append(dictionary.doc2bow(review['words']))
 
-corpora.BleiCorpus.serialize(Corpus_path,bow_t)
+corpora.BleiCorpus.serialize(Corpus_path_test,bow_test)
 
-corpus = corpora.BleiCorpus(Corpus_path)
+corpus_test = corpora.BleiCorpus(Corpus_path_test)
 
-LDA = gensim.models.LdaModel.load(LDA_path)
+LDA = gensim.models.LdaModel.load(LDA_path_train)
 print 'Hii'
-print LDA.bound(corpus)
-print LDA.log_perplexity(corpus)
+print LDA.bound(corpus_test)
+print LDA.log_perplexity(corpus_test)
 
 '''
 LDA = gensim.models.LdaModel.load(LDA_path)
