@@ -1,6 +1,7 @@
 import json
 import collections
 from UTFToAscii import convert
+from scipy.stats.stats import pearsonr   
 
 from pymongo import MongoClient
 from Constants import constants
@@ -36,12 +37,15 @@ print len(list)
 '''	
 
 #for i in range(93,94):	
-rest =restaurant_cursor.__getitem__(93)
+rest =restaurant_cursor.__getitem__(5227)
 reviews = corpus_collection.find({'business_id': rest['_id']})
 #print (reviews.count())
 #for review in reviews:
 	#print review['stars']
-print rest['stars']
+#print rest['stars']
+print '\n'
+print ("Restaurant : %s" % rest['name'])
+print '\n'
 topics = []
 glob_norm = 0.0
 glob_fan =  0.0
@@ -55,6 +59,7 @@ for i in range(15):
 	fan_count = 0
 	useful_count = 0
 	reviews = corpus_collection.find({'business_id': rest['_id']})
+	top =['Game \t', 'Chinese', 'Cafe \t','Japanese','Breakfast','Pizza \t','Dressings','Buffet \t','Diner \t','Drinks \t','Tap \t','Deli \t','Service time','Fast food','Mexican']
 	for review in reviews:
 		#print i
 		topic_rating = topic_rating_collection.find_one({'_id' : review['_id']})
@@ -75,11 +80,13 @@ for i in range(15):
 		glob_norm += round(topic_rate/topic_count,2) * topic_count
 		glob_fan += round(fan_rate/fan_count,2) * topic_count
 		glob_use += round(useful_rate/useful_count,2) * topic_count
-		topics.append((i,round(topic_rate/topic_count,2), round(fan_rate/fan_count,2),round(useful_rate/useful_count,2),topic_count))
-print 'Topic','\t','Rating','\t','FanRat','\t','Useful','\t','Count'
+		topics.append((i,top[i],round(topic_rate/topic_count,2), round(fan_rate/fan_count,2),round(useful_rate/useful_count,2),topic_count))
+print 'No.','\t','Topic Name','\t','Rating','\t','FanRat','\t','Useful','\t','Count'
 for topic in topics:
-		print topic[0],'\t',topic[1],'\t', topic[2], '\t', topic[3], '\t', topic[4]
-print glob_norm/glob_count
-print glob_fan/glob_count
-print glob_use/glob_count
-		
+		print topic[0],'\t',topic[1],'\t', topic[2], '\t', topic[3], '\t', topic[4],'\t', topic[5]
+print '\n'
+print 'Yelp Rating %r' % rest['stars']
+print 'Fan Rating %r' % round(glob_fan/glob_count,2)
+#print 'Correlation %r' % pearsonr(rest['stars'],glob_fan/glob_count)
+print 'User Rating %r' % round(glob_norm/glob_count,2)
+print 'Usefulness Rating %r' % round(glob_use/glob_count,2)
