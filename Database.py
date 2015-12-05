@@ -8,6 +8,10 @@ from Constants import constants
 
 restaurants_collection = MongoClient()[constants.DATABASE][constants.BUSINESS_COLLECTION]
 reviews_collection = MongoClient()[constants.DATABASE][constants.REVIEWS_COLLECTION]
+db = MongoClient()[constants.DATABASE]
+db.drop_collection(restaurants_collection)
+
+print restaurants_collection.find().count()
 
 with open(constants.JSON_DATASET_FILE+'yelp_academic_dataset_business.json') as business:
 	for line in business:
@@ -17,10 +21,12 @@ with open(constants.JSON_DATASET_FILE+'yelp_academic_dataset_business.json') as 
 			restaurants_collection.insert({
 				"_id" : business_info["business_id"],
 				"review_count" : business_info["review_count"],
+				"name" : business_info["name"],
 				"stars" : business_info["stars"],
 				"attributes" : business_info["attributes"],
 				"categories" : business_info["categories"]
 			})
+print restaurants_collection.find().count()
 
 #val = restaurants_collection.find_one( {"_id" : "SQ0j7bgSTazkVQlF5AnqyQ" })
 #print convert(val)
